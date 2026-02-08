@@ -153,25 +153,30 @@ function showError() {
   result.innerText = "Error adding item";
 }
 
-function getItem() {
-      const id = document.getElementById("itemId").value;
 
-      fetch(`https://itemhub-api-production.up.railway.app/api/items/${id}`)
-        .then(res => {
-          if (!res.ok) {
-            throw new Error("Item not found");
-          }
-          return res.json();
-        })
-        .then(data => {
-          document.getElementById("itemResult").innerText =
-            JSON.stringify(data, null, 2);
-        })
-        .catch(err => {
-          document.getElementById("itemResult").innerText =
-            err.message;
-        });
-    }
+
+    function getItem() {
+  const id = document.getElementById("itemId").value;
+
+  fetch(`https://itemhub-api-production.up.railway.app/api/items/${id}`)
+    .then(res => {
+      if (!res.ok) {
+        throw new Error("Item not found");
+      }
+      return res.json(); // still read JSON from API
+    })
+    .then(item => {
+      document.getElementById("itemResult").innerText =
+        "Item ID: " + item.id + "\n" +
+        "Name: " + item.name + "\n" +
+        "Description: " + item.description + "\n" +
+        "Price: ₹" + item.price + "\n" +
+        "Category: " + item.category;
+    })
+    .catch(err => {
+      document.getElementById("itemResult").innerText = err.message;
+    });
+}
 </script>
 
   </body>
