@@ -17,14 +17,16 @@
     .container {
       background: #ffffff;
       padding: 25px;
-      width: 320px;
+      width: 360px;
       border-radius: 8px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      overflow-y: auto;
+      max-height: 95vh;
     }
 
     h2 {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
       color: #333;
     }
 
@@ -51,6 +53,7 @@
       border: none;
       border-radius: 4px;
       cursor: pointer;
+      margin-bottom: 10px;
     }
 
     button:hover {
@@ -58,7 +61,7 @@
     }
 
     #result {
-      margin-top: 15px;
+      margin-bottom: 10px;
       text-align: center;
       font-weight: bold;
     }
@@ -70,11 +73,25 @@
     .error {
       color: red;
     }
+
+    hr {
+      margin: 20px 0;
+    }
+
+    pre {
+      background: #f1f1f1;
+      padding: 10px;
+      font-size: 13px;
+      overflow-x: auto;
+      border-radius: 4px;
+    }
   </style>
 </head>
 
 <body>
   <div class="container">
+
+    <!-- ADD ITEM -->
     <h2>Add Item</h2>
 
     <input id="name" placeholder="Name">
@@ -85,6 +102,18 @@
     <button onclick="addItem()">Add Item</button>
 
     <p id="result"></p>
+
+    <hr>
+
+    <!-- QUERY ITEM -->
+    <h2>Query Item</h2>
+
+    <input id="itemId" type="number" placeholder="Enter Item ID">
+
+    <button onclick="getItem()">Get Item</button>
+
+    <pre id="itemResult"></pre>
+
   </div>
 
   <script>
@@ -108,13 +137,33 @@
       .then(data => {
         const result = document.getElementById("result");
         result.className = "success";
-        result.innerText = "Item added successfully!";
+        result.innerText = "Item added successfully! ID: " + data.data.id;
       })
       .catch(err => {
         const result = document.getElementById("result");
         result.className = "error";
         result.innerText = "Error adding item";
       });
+    }
+
+    function getItem() {
+      const id = document.getElementById("itemId").value;
+
+      fetch(`https://itemhub-api-production.up.railway.app/api/items/${id}`)
+        .then(res => {
+          if (!res.ok) {
+            throw new Error("Item not found");
+          }
+          return res.json();
+        })
+        .then(data => {
+          document.getElementById("itemResult").innerText =
+            JSON.stringify(data, null, 2);
+        })
+        .catch(err => {
+          document.getElementById("itemResult").innerText =
+            err.message;
+        });
     }
   </script>
 </body>
