@@ -90,7 +90,7 @@
 
   <body>
     <div class="container">
-      <!-- ADD ITEM -->
+    
       <h2>Add Item</h2>
 
       <input id="name" placeholder="Name" />
@@ -104,7 +104,7 @@
 
       <hr />
 
-      <!-- QUERY ITEM -->
+ 
       <h2>Query Item</h2>
 
       <input id="itemId" type="number" placeholder="Enter Item ID" />
@@ -129,7 +129,7 @@ function addItem() {
     })
   })
   .then(async res => {
-    const text = await res.text(); // SAFEST
+    const text = await res.text(); 
     if (res.status === 201 || res.status === 200) {
       showSuccess(text);
     } else {
@@ -163,7 +163,7 @@ function showError() {
       if (!res.ok) {
         throw new Error("Item not found");
       }
-      return res.json(); // still read JSON from API
+      return res.json(); 
     })
     .then(item => {
       document.getElementById("itemResult").innerText =
